@@ -7,6 +7,7 @@ public class Custom implements Runnable
 	int myThreadID;
 	private static Object myLock = new Object();
 	String myString;
+	static int printNum = 1;
 
 	public Custom(String x)
 	{
@@ -14,11 +15,11 @@ public class Custom implements Runnable
 		myString = x;
 		System.out.println("Thread ID:" + myThreadID + "  " + x);
 	}
+
 	@Override
 	public void run()
 	{
-
-		for (int x = 0; x <= 30; x++)
+		for (int x = 0; x <= 18; x++)
 		{
 			if (threadAllowedToRun <= 3)
 				synchronized (myLock)
@@ -37,13 +38,14 @@ public class Custom implements Runnable
 						{
 						}
 					}
-					System.out.println("Thread ID:" + myThreadID + "  " + myString);
+					System.out.println("Thread ID:" + myThreadID + "  " + myString + "    " + printNum);
 					myLock.notifyAll();
 					threadAllowedToRun++;
 				}
 			else
 			{
 				threadAllowedToRun = 1;
+				printNum++;
 			}
 		}
 	}
