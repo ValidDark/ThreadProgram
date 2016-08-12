@@ -13,7 +13,6 @@ public class Custom implements Runnable
 	{
 		this.myThreadID = numThread++;
 		myString = x;
-		System.out.println("Thread ID:" + myThreadID + "  " + x);
 	}
 
 	@Override
@@ -21,32 +20,41 @@ public class Custom implements Runnable
 	{
 		for (int x = 0; x <= 18; x++)
 		{
+			// synchronized (myLock)
+			// {
 			if (threadAllowedToRun <= 3)
-				synchronized (myLock)
+			{
+				while (myThreadID != threadAllowedToRun)
 				{
-					while (myThreadID != threadAllowedToRun)
-					{
-						try
-						{
-							myLock.wait();
-						}
-						catch (InterruptedException e)
-						{
-
-						}
-						catch (Exception e)
-						{
-						}
-					}
-					System.out.println("Thread ID:" + myThreadID + "  " + myString + "    " + printNum);
-					myLock.notifyAll();
-					threadAllowedToRun++;
+//					try
+//					{
+//						synchronized (myLock)
+//						{
+//							myLock.wait();
+//						}
+//					}
+//					catch (InterruptedException e)
+//					{
+//
+//					}
+//					catch (Exception e)
+//					{
+//					}
 				}
+				System.out.println("Thread ID:" + myThreadID + "  " + myString + "    " + printNum);
+				threadAllowedToRun++;
+//				synchronized (myLock)
+//				{
+//					myLock.notifyAll();
+//				}
+			}
 			else
 			{
 				threadAllowedToRun = 1;
 				printNum++;
 			}
+			// }
+
 		}
 	}
 }
